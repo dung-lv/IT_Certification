@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "common :: head">
+</head>
+<body>
+    <div class="container body">
+        <div style="font-size: 40px; margin-bottom: 20px;">Quản lý hệ thống</div>
+        <div class="row">
+	        <header th:replace="common :: header"></header>
+	        <div class="col-lg-10">
+	        	<h3 style="margin-top: -3px; text-align: center;">DANH SÁCH THU TIỀN</h3>
+	        	<div th:if="${examlist==null or examlist.empty}" class="notification bg-warning">
+				   <h1>Danh sách trống</h1>
+				</div>
+				<div th:if="${examlist!=null and !examlist.empty}">
+					<div style="text-align: -webkit-center;">
+	        			<div th:if="${examlist.get(0).getExamination().getContent() == 'CoBan'}">
+	        				<label class="control-label">Nội dung:</label>
+	        				<span>Thi cấp chứng chỉ ứng dụng CNTT cơ bản</span>
+	        			</div>
+	        			<div th:if="${examlist.get(0).getExamination().getContent() == 'NangCao'}">
+	        				<label class="control-label">Nội dung:</label>
+	        				<span>Thi cấp chứng chỉ ứng dụng CNTT nâng cao</span>
+	        			</div>
+	        			<label class="control-label">Mã đợt thi:</label>
+	        			<span th:text="${examlist.get(0).getExamination().getCode()}"></span>    
+	        			<label class="control-label"> - Ngày thi dự kiến:</label>   
+	        			<span th:text="${examlist.get(0).getExamination().getDateExam()}"></span>                                  
+					</div>
+		            <div style="float:right; margin-bottom: 10px;">
+						<a th:href="@{'/createExcel-collectMoney'}" style="padding-right: 5px;"><img th:src="@{/image/excel-icon.png}" style="width: 40px;"></a>
+						<button type="button" class="btn btn-success btn-update-collectMoney" style="float:right; padding-bottom: 11px;">Cập nhật</button>
+		            </div>
+		            <table class="table table-bordered">
+		                <thead>
+		                  <tr>
+		                    <th class="text-center" style="width: 3%">STT</th>
+		                    <th class="text-center" style="width: 21%">Họ tên</th>
+		                    <th class="text-center" style="width: 14%">Ngày sinh</th>
+		                    <th class="text-center" style="width: 12%">CMT</th>
+		                    <th class="text-center" style="width: 10%">Đối tượng</th>
+		                    <th class="text-center" style="width: 10%">Ôn thi</th>
+		                    <th class="text-center" style="width: 10%">Thi</th>
+		                    <th class="text-center" style="width: 10%">Tổng</th>
+		                    <th class="text-center" style="width: 10%">Ký nộp</th>
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                	<th:block th:each="exam : ${examlist}">
+			                  <tr>
+			                    <td th:text="${examStat.index + 1}"></td>
+			                    <td th:text="${exam.getCandidate().getNameCandidate()}"></td>
+			                    <td th:text="${exam.getCandidate().getDateOfBirth()}"></td>
+			                    <td th:text="${exam.getCandidate().getCode()}"></td>
+			                    <td th:text="${exam.getCandidate().getDemand().getObject()}"></td>
+			                    <td th:text="${exam.getCandidate().getDemand().getReviewCost()}"></td>
+				                <td th:text="${exam.getCandidate().getDemand().getExamCost()}"></td>
+				                <td th:text="${exam.getTotalCost()}"></td>
+				                <td>
+				                    <div class="checkbox" style="text-align: center;">
+				                      <label><input id="confirm" type="checkbox" th:value="${exam.getCandidate().getIdCandidate()}" name="confirm"></label>
+				                    </div>
+				                </td>
+			                  </tr>
+			                </th:block>
+		                </tbody>
+		             </table>
+		          </div>
+		     </div>  
+	     </div>          
+    </div>
+    <footer th:replace="common :: footer"></footer>
+</body>
+</html>

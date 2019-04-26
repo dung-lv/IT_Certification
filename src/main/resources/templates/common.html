@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Ứng dụng CNTT</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/fonts.googleapis.com.css">
+	<link rel="stylesheet" href="/css/jquery-ui.custom.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<header th:fragment="header">
+		<div class="col-lg-2">
+            <ul class="nav nav-pills nav-stacked bodyleft">
+                <li class="categoryactive"><a th:href="@{/admin/dotthi}">Đợt thi và Thành viên</a></li>
+                <li><a th:href="@{/admin/hoidong}">Danh sách hội đồng</a></li>
+                <li><a th:href="@{/admin/thutien}">Danh sách thu tiền</a></li>
+                <li><a th:href="@{/admin/thi}">Danh sách thi</a></li>
+                <li><a th:href="@{/admin/thubai}">Danh sách thu bài</a></li>
+                <li><a th:href="@{/admin/ketquathi}">Kết quả thi</a></li>
+                <li><a th:href="@{/admin/chungchi}">Danh sách cấp chứng chỉ</a></li>
+                <li><a th:href="@{/admin/dulieu}">Dữ liệu hệ thống</a></li>
+            </ul>
+        </div>
+	</header>
+    <footer th:fragment="footer">
+    	<script src="/js/jquery-2.2.4.min.js"></script>
+    	<script src="/js/jquery-ui.custom.min.js"></script>
+    	<script src="/js/bootstrap.min.js"></script>
+   		<script src="/js/bootstrap-datepicker.js"></script>
+   		<script src="/js/ace-extra.min.js"></script>
+    	<script src="/js/custom.js"></script>
+    </footer>
+</body>
+</html>

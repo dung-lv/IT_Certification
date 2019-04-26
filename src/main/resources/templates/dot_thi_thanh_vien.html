@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "common :: head">
+</head>
+<body>
+    <div class="container body">
+        <div style="font-size: 40px; text-align: center; margin-bottom: 20px;">Quản lý hệ thống</div>
+        <div class="row">
+	        <header th:replace="common :: header"></header>
+	        <div class="col-lg-10">
+	        	<h3 style="margin-top: -3px;">Tạo thông tin đợt thi</h3>
+	        	<div class="row">
+	        		<div th:if="${examination == null}">
+					   <div class="form-group col-md-3">
+		        			<label class="control-label" for="dateExam">Ngày thi dự kiến:</label>                 
+		                    <div class="input-group date" placeholder="mm-dd-yyyy" data-date-format="mm-dd-yyyy">
+		                        <input class="input-date-dob form-control" id="dateExam" name="dateExam" type="text" autocomplete="off" required>
+		                    </div>                   
+						</div>
+						<div class="form-group col-md-2">
+		        			<label class="control-label" for="code">Mã đợt thi:</label>                 
+		                    <input id="code" type="text" class="form-control" placeholder="Your answer" name="code" autocomplete="off" required>                 
+						</div>
+						<div class="form-group col-md-4">
+		        			<label class="control-label" for="dateExam">Nội dung:</label>                 
+		                    <select class="form-control content">
+								<option value="CoBan"><span>Thi cấp chứng chỉ cơ bản</span></option>
+								<option value="NangCao"><span>Thi cấp chứng chỉ nâng cao</span></option>
+							</select>                  
+						</div>
+					</div>
+					<div th:if="${examination != null}">
+		        		<div class="form-group col-md-3">
+		        			<label class="control-label" for="dateExam">Ngày thi dự kiến:</label>                 
+		                    <div class="input-group date" placeholder="mm-dd-yyyy" data-date-format="mm-dd-yyyy">
+		                        <input class="input-date-dob form-control" th:value="${examination.getDateExam()}" id="dateExam" name="dateExam" type="text" required>
+		                    </div>                   
+						</div>               
+		                <input id="id_examination" type="text" th:value="${examination.getIdExamination()}" name="idExamination" style="display: none;">                 
+						<div class="form-group col-md-2">
+		        			<label class="control-label" for="code">Mã đợt thi:</label>                 
+		                    <input id="code" type="text" class="form-control" th:value="${examination.getCode()}" placeholder="Your answer" name="code" required>                 
+						</div>
+						<div class="form-group col-md-4">                 
+							<div th:if="${examination.getContent() == 'CoBan'}">
+		        				<label class="control-label">Nội dung:</label>
+		        				<select class="form-control content">
+									<option th:value="${examination.getContent()}"><span>Thi cấp chứng chỉ cơ bản</span></option>
+								</select> 
+		        			</div>
+		        			<div th:if="${examination.getContent() == 'NangCao'}">
+		        				<label class="control-label">Nội dung:</label>
+		        				<select class="form-control content">
+									<option th:value="${examination.getContent()}"><span>Thi cấp chứng chỉ nâng cao</span></option>
+								</select> 
+		        			</div>                 
+						</div>
+					</div>
+					<div class="form-group col-md-3" style="margin-top:35px;">  
+	        			<button type="button" class="btn btn-info" data-toggle="modal" data-target="#memberModal" style="float:right;">Thêm thành viên</button>
+	        			<div th:if="${examination == null}">
+	        				<button type="button" class="btn btn-success btn-create-examination" style="float:right;"><span>Tạo đợt thi</span></button>
+	        			</div>
+	        			<div th:if="${examination != null}">
+	        				<button type="button" class="btn btn-success btn-update-examination" style="float:right;"><span>Cập nhật đợt thi</span></button>
+	        			</div>
+					</div>
+				</div>
+				<div class="modal fade" id="memberModal" role="dialog" data-keyboard="false" data-backdrop="static">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h3>Thông tin thành viên</h3>
+				      </div>
+				      <div class="modal-body"> 
+				        <form id="form-member">	
+				        	<div class="row">
+								<div class="col-lg-4">
+									<div class="form-group">
+										<label class="control-label" for="nameMember">Tên:</label>
+					                    <input id="modal-name-member" type="text" class="form-control" placeholder="Your answer" name="nameMember" autocomplete="off" required>
+				                    </div>
+								</div>
+								<div class="col-lg-4">
+									<label class="control-label" for="workUnit">Đơn vị:</label>
+					                <div>
+					                    <input id="modal-workunit-member" type="text" class="form-control" placeholder="Your answer" name="workUnit" autocomplete="off" required>
+					                </div>
+								</div>
+								<div class="col-lg-4">
+									<label class="control-label" for="rank">Cấp bậc:</label>
+				                	<select id="modal-rank-member" class="form-control" name="rank">
+					                    <th:block th:each="rank : ${rankList}">
+											<option th:value="${rank.getIdRank()}"><span th:text="${rank.getNameRank()}"></span></option>
+										</th:block>
+									</select>
+								</div>
+								<input id="modal-id-member" type="text" name="idMember" style="display: none"/>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<label class="control-label" for="note">Ghi chú:</label>
+				                	<textarea id="modal-note-member" class="form-control" rows="5" name="note"></textarea>
+								</div>
+				            </div>
+							<div class="modal-footer">
+					            <button type="button" class="btn btn-success btn-save-member">Lưu</button>
+						        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						    </div>
+				        </form>  
+				      </div>
+				    </div>   
+				  </div>
+				</div>
+				<div class="notification bg-warning" th:if="${memberList == null}">
+				   <h1>Danh sách trống</h1>
+				</div>
+				<div th:if="${memberList != null}">
+		            <table class="table table-bordered" id="table-member">
+		                <thead>
+		                  <tr>
+		                    <th class="text-center" style="width: 3%">STT</th>
+		                    <th class="text-center" style="width: 20%">Họ tên</th>
+		                    <th class="text-center" style="width: 10%">Đơn vị</th>
+		                    <th class="text-center" style="width: 10%">Cấp bậc</th>
+		                    <th class="text-center" style="width: 25%">Ghi chú</th>
+		                    <th class="text-center" style="width: 12%">Chọn hội đồng</th>
+		                    <th class="text-center" style="width: 10%">Nhiệm vụ</th>
+		                    <th class="text-center" style="width: 10%">Thao tác</th>
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                	<th:block th:each="member : ${memberList}">
+			                  <tr>
+			                    <td th:text="${memberStat.index + 1}"></td>
+			                    <td class="name-member" th:text="${member.getNameMember()}"></td>
+			                    <td class="workunit-member" th:text="${member.getWorkUnit()}"></td>
+			                    <td class="rank-member" th:text="${member.getRank().getNameRank()}"></td>
+			                    <td class="note-member" th:text="${member.getNote()}"></td>
+			                    <td class="id-member" th:text="${member.getIdMember()}" style="display: none"></td>
+			                    <td th:if="${member.getIsUse()}">
+			                    </td>
+			                    <td th:unless="${member.getIsUse()}">
+			                    	<div th:if="${examination != null}">
+			                    		<div class="checkbox" style="text-align: center;">
+					                      <label><input id="check-council" type="checkbox" th:value="${member.getIdMember()}" name="council"></label>
+					                    </div>
+			                    	</div>
+			                    	<div th:unless="${examination != null}">
+			                    		<div class="checkbox" style="text-align: center;">
+					                      <label><input id="check-council" type="checkbox" th:value="${member.getIdMember()}" name="council" disabled></label>
+					                    </div>
+			                    	</div>
+				                </td>
+				                <td th:text="${member.getRank().getMission().getNameMission()}"></td>
+			                    <td>
+			                    	<button type="button" class="btn-success btn-update-member" data-toggle="modal" data-target="#memberModal">Sửa</button>
+						        	<button type="button" class="btn-danger btn-delete-member">Xóa</button>
+						        </td>
+			                  </tr>
+			                 </th:block>
+		                </tbody>
+		             </table>
+		             <!-- <div style="float: right;">
+		             	<ul th:each="i : ${#numbers.sequence(1, paginationSize)}" class="pagination">
+		                    <li><a class="examination-pagination" th:text="${i}"></a></li>
+		                </ul>
+		             </div> -->
+		          </div>
+		     </div>  
+	     </div>          
+    </div>
+    <footer th:replace="common :: footer"></footer>
+</body>
+</html>

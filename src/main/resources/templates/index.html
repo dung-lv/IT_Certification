@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "common :: head">
+</head>
+<body>
+    <div class="container body" style="border: 2px solid;">
+        <h2>PHIẾU ĐĂNG KÝ DỰ THI</h2>
+        <div th:if="${examination == null}" class="notification bg-warning">
+		   <h1>Hiện chưa có đợt thi mới. Không thế đăng ký !!!</h1>
+		</div>
+		<div th:if="${examination != null}">
+        	<div style="text-align: -webkit-center;">
+       			<div th:if="${examination.getContent() == 'CoBan'}">
+       				<label class="control-label">Nội dung:</label>
+       				<span>Thi cấp chứng chỉ ứng dụng CNTT cơ bản</span>
+       			</div>
+       			<div th:if="${examination.getContent() == 'NangCao'}">
+       				<label class="control-label">Nội dung:</label>
+       				<span>Thi cấp chứng chỉ ứng dụng CNTT nâng cao</span>
+       			</div>
+       			<label class="control-label">Mã đợt thi:</label>
+       			<span th:text="${examination.getCode()}"></span>    
+       			<label class="control-label"> - Ngày thi dự kiến:</label>   
+       			<span th:text="${examination.getDateExam()}"></span>                                  
+			</div>
+		
+	        <p id="rule">* required</p>
+	        <form th:action="@{/dangky}" class="form-horizontal" th:object="${candidateModel}" method="post">
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="email">Email(*)</label>
+	                <div class="col-lg-6">          
+	                    <input type="text" maxlength="200" th:field="*{email}" class="form-control" placeholder="Your answer" name="email"
+	                    autocomplete="off" required oninvalid="this.setCustomValidity('Email không được để trống')" oninput="this.setCustomValidity('')">
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="name">Họ và tên(*)</label>
+	                <div class="col-lg-6">
+	                    <input type="text" maxlength="200" th:field="*{nameCandidate}" class="form-control" placeholder="Your answer" name="name" 
+	                    autocomplete="off" required oninvalid="this.setCustomValidity('Họ và tên không được để trống')" oninput="this.setCustomValidity('')">
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="dateOfBirth">Ngày sinh(*):</label>
+	                <div class="col-lg-6">                  
+	                    <div class="input-group date" placeholder="mm-dd-yyyy" data-date-format="mm-dd-yyyy">
+	                        <input class="input-date-dob form-control" th:field="*{dateOfBirth}" name="dateOfBirth" type="text" autocomplete="off" required>
+	                    </div>                 
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="sex">Giới tính(*):</label>
+	                <div class="col-lg-6">          
+	                    <label class="radio-inline"><input type="radio" th:field="*{sex}" name="optradio" value="1" checked>Nam</label>
+	                    <label class="radio-inline"><input type="radio" th:field="*{sex}" name="optradio" value="0">Nữ</label>
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="code">Số CMTND(*):</label>
+	                <div class="col-lg-6">          
+	                    <input type="text" pattern="\d*" maxlength="12" th:field="*{code}" class="form-control" placeholder="Your answer" name="code"
+	                    autocomplete="off" required oninvalid="this.setCustomValidity('Số CMTND không được để trống')" oninput="this.setCustomValidity('')">
+	                </div>
+	                <span class="control-label col-lg-4" id="idUser_error_message"></span>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="phone">Điện thoại:</label>
+	                <div class="col-lg-6">          
+	                    <input type="text" pattern="\d*" maxlength="12" th:field="*{phone}" class="form-control" placeholder="Your answer" name="phone"
+	                    autocomplete="off" required oninvalid="this.setCustomValidity('Số điện thoại không được để trống')" oninput="this.setCustomValidity('')">
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="object">Đối tượng(*):</label>
+	                <div class="col-lg-6">          
+	                    <label class="radio-inline"><input type="radio" th:field="*{object}" name="optradio" value="Tu do" checked>Tự do</label>
+	                    <label class="radio-inline"><input type="radio" th:field="*{object}" name="optradio" value="Thuoc HV">Thuộc HV</label>
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="need">Hình thức(*):</label>
+	                <div class="col-lg-6">          
+	                    <label class="radio-inline"><input type="radio" th:field="*{formal}" name="optradio" value="Ôn và thi" checked>Ôn luyện và thi</label>
+	                    <label class="radio-inline"><input type="radio" th:field="*{formal}" name="optradio" value="Thi">Chỉ tham gia thi</label>
+	                </div>
+	            </div>
+	
+	            <div class="form-group">
+	                <label class="control-label col-lg-2" for="level">Trình độ(*):</label>
+	                <div class="col-lg-6">  
+		                <div th:if="${examination.getContent() == 'CoBan'}">
+		       				<div class="checkbox">
+		                      <label><input type="checkbox" th:field="*{level}" value="Co ban" checked>Chứng chỉ cơ bản</label>
+		                    </div>
+		                    <div class="checkbox">
+		                      <label><input type="checkbox" th:field="*{level}" value="Nang cao" disabled>Chứng chỉ nâng cao</label>
+		                    </div>
+		       			</div>
+		       			<div th:if="${examination.getContent() == 'NangCao'}">
+		       				<div class="checkbox">
+		                      <label><input type="checkbox" th:field="*{level}" value="Co ban" disabled>Chứng chỉ cơ bản</label>
+		                    </div>
+		                    <div class="checkbox">
+		                      <label><input type="checkbox" th:field="*{level}" value="Nang cao" checked>Chứng chỉ nâng cao</label>
+		                    </div>
+		       			</div>        
+	                </div>
+	            </div>
+	
+	            <div class="form-group">        
+	                <div class="col-lg-offset-2 col-lg-6">
+	                    <button class="btn btn-success btn-register">
+	                        <span>Xác nhận</span>
+	                    </button>
+	                </div>
+	            </div>
+	        </form>
+	    </div> 
+	</div>
+    <footer th:replace="common :: footer"></footer>  
+</body>
+</html>

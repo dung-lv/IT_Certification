@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "common :: head">
+</head>
+<body>
+    <div class="container body">
+        <div style="font-size: 40px; margin-bottom: 20px;">Quản lý hệ thống</div>
+        <div class="row">
+	        <header th:replace="common :: header"></header>
+	        <div class="col-lg-10">
+	        	<h3 style="margin-top: -3px; text-align: center;">DANH SÁCH HỘI ĐỒNG THI CẤP CHỨNG CHỈ UDCNTT</h3>
+	        	<div th:if="${examination == null}" class="notification bg-warning">
+				   <h1>Danh sách trống</h1>
+				</div>
+				<div th:if="${examination != null}">
+		        	<div style="text-align: -webkit-center;">
+	        			<div th:if="${examination.getContent() == 'CoBan'}">
+	        				<label class="control-label">Nội dung:</label>
+	        				<span>Thi cấp chứng chỉ ứng dụng CNTT cơ bản</span>
+	        			</div>
+	        			<div th:if="${examination.getContent() == 'NangCao'}">
+	        				<label class="control-label">Nội dung:</label>
+	        				<span>Thi cấp chứng chỉ ứng dụng CNTT nâng cao</span>
+	        			</div>
+	        			<label class="control-label">Mã đợt thi:</label>
+	        			<span th:text="${examination.getCode()}"></span>    
+	        			<label class="control-label"> - Ngày thi dự kiến:</label>   
+	        			<span th:text="${examination.getDateExam()}"></span>                                  
+					</div>
+					<div style="float:right; margin-bottom: 10px;">
+						<a th:href="@{'/createExcel-council'}"><img th:src="@{/image/excel-icon.png}" style="width: 40px;"></a>
+		            </div>
+		            <table class="table table-bordered" id="table-member">
+		                <thead>
+		                  <tr>
+		                    <th class="text-center" style="width: 3%">STT</th>
+		                    <th class="text-center" style="width: 20%">Họ tên</th>
+		                    <th class="text-center" style="width: 10%">Đơn vị</th>
+		                    <th class="text-center" style="width: 10%">Cấp bậc</th>
+		                    <th class="text-center" style="width: 25%">Ghi chú</th>
+		                    <th class="text-center" style="width: 10%">Nhiệm vụ</th>
+		                  </tr>
+		                </thead>
+		                <tbody>
+		                	<th:block th:each="member : ${examination.getMembers()}">
+			                  <tr>
+			                    <td th:text="${memberStat.index + 1}"></td>
+			                    <td class="name-member" th:text="${member.getNameMember()}"></td>
+			                    <td class="workunit-member" th:text="${member.getWorkUnit()}"></td>
+			                    <td class="rank-member" th:text="${member.getRank().getNameRank()}"></td>
+			                    <td class="note-member" th:text="${member.getNote()}"></td>
+				                <td th:text="${member.getRank().getMission().getNameMission()}"></td>
+			                  </tr>
+			                </th:block>
+		                </tbody>
+		             </table>
+		          </div>
+		     </div>  
+	     </div>          
+    </div>
+    <footer th:replace="common :: footer"></footer>
+</body>
+</html>
